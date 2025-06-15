@@ -134,23 +134,26 @@ body {
   color: rgb(255, 70, 162);
   margin-left: 3px;
 }
+
 .headline {
   font-family: 'Noto Sans KR', sans-serif;
   font-weight: 900;
   font-size: 80px;
   color: white;
 }
+
 .description {
   white-space: pre-wrap;
   font-family: 'Noto Sans KR', sans-serif;
   font-weight: 200;
-  font-size: 15px;
-  line-height: 1.5;
+  font-size: 16px;
+  line-height: 1.7;
   color: white;
-  margin: 0 0 0 3px;
-  max-width: 700px;
-  text-align: start;
+  margin: 20px 0 0 -11px; /* 왼쪽 맞춤 조금 더 붙임 */
+  max-width: 780px;
+  text-align: left;
 }
+
  .caption {
   display: grid;
   grid-template-columns: auto auto auto auto;

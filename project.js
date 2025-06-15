@@ -1,127 +1,157 @@
-const thumbList = document.querySelector('.thumb-list');
-const TOTAL_CARDS = 15;
-const VISIBLE_CARDS = 5;
-let position = 0;
-let velocity = 0;
-const sensitivity = 0.0025;  // 휠 감도
-const friction = 0.08;        // 마찰력 (감속)
+document.addEventListener('DOMContentLoaded', () => {
+  const thumbList = document.querySelector('.thumb-list');
+  const background1 = document.getElementById('bg1');
+  const background2 = document.getElementById('bg2');
+  const titleKor = document.querySelector('.main-title-kor');
+  const titleEng = document.querySelector('.main-title-eng');
+  const desc = document.querySelector('.main-desc');
+  const popupOverlay = document.getElementById("popupOverlay");
+  const popupImage = document.getElementById("popupImage");
+  const indicator = document.getElementById("indicator");
 
-// 카드 y 위치: 1,5번은 아래로 조금 더 위치 조절 필요하면 숫자 변경하세요
-const customPositions = [
-  10,       // 1번 카드 (뒤쪽, 살짝 아래 위치)
-  80 + 14,  // 2번 카드 (3번과 14px 간격 오른쪽)
-  80 + 14 * 2,  // 3번 카드 (중앙, 기준선)
-  80 + 14 * 3,  // 4번 카드 (3번과 14px 간격 왼쪽)
-  80 + 14 * 4   // 5번 카드 (뒤쪽, 살짝 아래 위치)
-];
+  const TOTAL_CARDS = 15;
+  const TOTAL_INDICATORS = 5;
+  const CARD_WIDTH = 280;
+  const CARD_HEIGHT = 200;
+  const CARD_GAP = 40;
+  const SCROLL_SENSITIVITY = 0.002;
+  const FRICTION = 0.08;
 
-// 불투명도
-const opacityMap = [
-  0.3,  // 1번 카드 (가장 낮음)
-  0.6,  // 2번 카드
-  1.0,  // 3번 카드 (중앙, 가장 높음)
-  0.6,  // 4번 카드
-  0.3   // 5번 카드 (가장 낮음)
-];
+  let position = 0;
+  let velocity = 0;
+  let prevCenterIndex = -1;
 
-// z-index (3번 > 2,4번 > 1,5번)
-const zIndexMap = [10, 20, 30, 20, 10];
+  // 카드 데이터 (15개)
+  const cardsData = Array.from({ length: TOTAL_CARDS }, (_, i) => ({
+    img: `project${i + 1}.jpg`,
+    titleKor: `한글 제목 ${i+1}`,
+    titleEng: `English Title ${i+1}`,
+    desc: `이것은 ${i+1}번째 카드의 설명입니다.`
+  }));
 
-// 크기 (1,5번은 0.6, 2,4번은 1, 3번은 1)
-const scaleMap = [0.6, 1, 1, 1, 0.6];
+  // 인디케이터 5개 생성
+  for (let i = 0; i < TOTAL_INDICATORS; i++) {
+    const dot = document.createElement("div");
+    dot.className = "indicator-dot";
+    indicator.appendChild(dot);
+  }
+  const dots = document.querySelectorAll('.indicator-dot');
 
-// 카드 데이터 배열
-const cardsData = Array.from({ length: TOTAL_CARDS }, (_, i) => ({
-  img: `project${(i % 8) + 1}.jpg`,
-  caption: `${i + 1}번 카드 문구입니다`
-}));
+  // 카드 생성 + 팝업 연결
+  function createCards() {
+    cardsData.forEach(data => {
+      const card = document.createElement('div');
+      card.className = 'thumb-card';
 
-function createCards() {
-  cardsData.forEach(data => {
-    const card = document.createElement('div');
-    card.className = 'thumb-card';
+      const img = document.createElement('img');
+      img.src = data.img;
+      img.alt = data.titleKor;
 
-    const img = document.createElement('img');
-    img.src = data.img;
-    img.alt = data.caption;
+      const caption = document.createElement('div');
+      caption.className = 'thumb-caption';
+      caption.textContent = data.titleEng;
 
-    const caption = document.createElement('div');
-    caption.className = 'thumb-caption';
-    caption.textContent = data.caption;
+      card.appendChild(img);
+      card.appendChild(caption);
+      thumbList.appendChild(card);
 
-    card.appendChild(img);
-    card.appendChild(caption);
+      // 팝업 연결
+      card.addEventListener("click", () => {
+        popupImage.src = data.img;
+        popupOverlay.classList.remove("hidden");
+      });
+    });
 
-    thumbList.appendChild(card);
-  });
-}
-createCards();
+    thumbList.style.height = `${TOTAL_CARDS * (CARD_HEIGHT + CARD_GAP)}px`;
+  }
 
-const cards = document.querySelectorAll('.thumb-card');
+  createCards();
 
-function update() {
-  velocity *= (1 - friction);
-  position += velocity;
+  const cards = document.querySelectorAll('.thumb-card');
+  const centerY = 150;
 
-  if (position < 0) position += TOTAL_CARDS;
-  if (position >= TOTAL_CARDS) position -= TOTAL_CARDS;
+  // 카드 위치 / 크기 / 투명도 설정
+  const POSITION_MAP = {
+    "-2": { yOffset: -170, scale: 0.6, opacity: 0.4 },
+    "-1": { yOffset: -90,  scale: 0.8, opacity: 0.7 },
+     "0": { yOffset: 100,  scale: 0.8, opacity: 1.0 },
+     "1": { yOffset: 300,  scale: 0.8, opacity: 0.7 },
+     "2": { yOffset: 380,  scale: 0.6, opacity: 0.4 }
+  };
 
-  const centerIndex = Math.round(position) % TOTAL_CARDS;
+  const INDICATOR_OPACITY_MAP = {
+    active: 0.9,
+    inactive: 1.0
+  };
 
-  cards.forEach((card, i) => {
-    let offset = i - centerIndex;
+  function update() {
+    velocity *= (1 - FRICTION);
+    position += velocity;
 
-    // 무한 순환 고려
-    if (offset > TOTAL_CARDS / 2) offset -= TOTAL_CARDS;
-    if (offset < -TOTAL_CARDS / 2) offset += TOTAL_CARDS;
+    if (position < 0) position += TOTAL_CARDS;
+    if (position >= TOTAL_CARDS) position -= TOTAL_CARDS;
 
-    if (offset >= -2 && offset <= 2) {
-      const index = offset + 2;  // offset -2 → 0, ... 0 → 2, ... 2 → 4
+    const centerIndex = Math.round(position) % TOTAL_CARDS;
 
-      // 2번, 4번 카드가 1번, 5번 위치에 갈 경우 스타일 변경
-      let scale = scaleMap[index];
-      let opacity = opacityMap[index];
-      let zIndex = zIndexMap[index];
-      let y = customPositions[index];
-
-      if ((index === 1 || index === 3) && (offset === -2 || offset === 2)) {
-        // 2번,4번 카드가 1번,5번 위치에 있을 때
-        scale = 0.6;
-        opacity = 0.3;
-        zIndex = 10;
-        y = customPositions[0];  // 1번 위치 y 좌표
-      }
-
-      card.style.display = 'flex';
-      card.style.transform = `
-        translateY(${y}px)
-        translateZ(${index === 2 ? 60 : -Math.abs(offset) * 40}px)
-        scale(${scale})
-      `;
-      card.style.opacity = opacity;
-      card.style.zIndex = zIndex;
-      card.style.pointerEvents = 'auto';
-
-      if (index === 2) card.classList.add('center');
-      else card.classList.remove('center');
-
-      // 캡션 업데이트
-      const caption = card.querySelector('.thumb-caption');
-      if (caption) caption.textContent = cardsData[i].caption;
-    } else {
-      card.style.display = 'none';
-      card.style.opacity = 0;
-      card.style.pointerEvents = 'none';
-      card.classList.remove('center');
+    // 배경 & 타이틀 업데이트
+    if (centerIndex !== prevCenterIndex) {
+      prevCenterIndex = centerIndex;
+      const currentData = cardsData[centerIndex];
+      background2.src = currentData.img;
+      background2.style.opacity = 0;
+      setTimeout(() => {
+        background1.src = currentData.img;
+        background2.style.opacity = 1;
+      }, 100);
+      titleKor.textContent = currentData.titleKor;
+      titleEng.textContent = currentData.titleEng;
+      desc.innerHTML = currentData.desc;
     }
+
+    // 카드 위치/크기/투명도 업데이트
+    cards.forEach((card, i) => {
+      let offset = i - centerIndex;
+      if (offset > TOTAL_CARDS / 2) offset -= TOTAL_CARDS;
+      if (offset < -TOTAL_CARDS / 2) offset += TOTAL_CARDS;
+
+      if (Math.abs(offset) <= 2) {
+        const pos = POSITION_MAP[offset.toString()];
+        const y = centerY + pos.yOffset;
+        card.style.display = 'flex';
+        card.style.transform = `translateY(${y}px) scale(${pos.scale})`;
+        card.style.opacity = pos.opacity;
+        card.style.zIndex = 100 - Math.abs(offset);
+        card.classList.toggle('center', offset === 0);
+      } else {
+        card.style.display = 'none';
+        card.style.opacity = 0;
+      }
+    });
+
+    // 인디케이터 업데이트
+    const indicatorIndex = Math.floor(centerIndex / (TOTAL_CARDS / TOTAL_INDICATORS));
+    dots.forEach((dot, idx) => {
+      if (idx === indicatorIndex) {
+        dot.classList.add("active");
+        dot.style.opacity = INDICATOR_OPACITY_MAP.active;
+      } else {
+        dot.classList.remove("active");
+        dot.style.opacity = INDICATOR_OPACITY_MAP.inactive;
+      }
+    });
+
+    requestAnimationFrame(update);
+  }
+
+  thumbList.addEventListener('wheel', e => {
+    e.preventDefault();
+    velocity += e.deltaY * SCROLL_SENSITIVITY;
+  }, { passive: false });
+
+  // 팝업 닫기
+  popupOverlay.addEventListener("click", () => {
+    popupOverlay.classList.add("hidden");
   });
 
-  requestAnimationFrame(update);
-}
-
-thumbList.addEventListener('wheel', e => {
-  e.preventDefault();
-  velocity += e.deltaY * sensitivity;
-}, { passive: false });
-
-update();
+  update();
+});

@@ -7,11 +7,13 @@
   <link rel="stylesheet" href="project.css" />
 </head>
 <body>
+    <div class="indicator-container" id="indicator"></div>
   <!-- 배경 이미지 -->
   <div class="bg-row">
-    <img src="project1.jpg" class="bg-img" />
-    <img src="project1.jpg" class="bg-img" />
+    <img id="bg1" src="project1.jpg" class="bg-img" />
+    <img id="bg2" src="project1.jpg" class="bg-img" />
   </div>
+
   <div class="background-overlay"></div>
   <div class="background-overlay2"></div>
 
@@ -19,15 +21,30 @@
   <div class="main-text">
     <div class="main-title-kor">타이포그래픽스포스터</div>
     <div class="main-title-eng">MEDIAVIDEO</div>
-    <div class="main-desc">
-      이 디자인은 타이포와 기하학을 이용한<br>모더니즘 느낌의 포스터입니다.
-    </div>
+    <div class="main-desc">이 디자인은 타이포와 기하학을 이용한<br>모더니즘 느낌의 포스터입니다.</div>
   </div>
 
-  <!-- 카드 스크롤 영역 (단일) -->
-  <div class="thumb-scroll-area">
-    <div class="thumb-list"></div>
+  <!-- 스크롤 영역 -->
+  <div class="scroll-container">
+    <div class="thumb-list" id="thumbList"></div>
   </div>
 
+  <!-- 팝업 -->
+  <div id="popupOverlay" class="popup hidden">
+    <img id="popupImage" src="">
+  </div>
+
+  <a href="index.html" class="home-button">
+  <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" fill="white" viewBox="0 0 24 24">
+    <path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"/>
+  </svg>
+</a>
+<a href="video.html" class="video-design-button">
+  <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="#ED4787" viewBox="0 0 24 24">
+    <path d="M8 5v14l11-7z"/> 
+  </svg>
+  <span>영상디자인</span>
+</a>
   <script src="project.js"></script>
 </body>
+</html>

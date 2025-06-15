@@ -2,6 +2,9 @@ document.addEventListener('DOMContentLoaded', () => {
   const thumbList = document.querySelector('.thumb-list');
   const background1 = document.getElementById('bg1');
   const background2 = document.getElementById('bg2');
+  const titleKor = document.querySelector('.main-title-kor');
+  const titleEng = document.querySelector('.main-title-eng');
+  const desc = document.querySelector('.main-desc');
   const popupOverlay = document.getElementById("popupOverlay");
   const popupVideo = document.getElementById("popupVideo");
   const indicator = document.getElementById("indicator");
@@ -18,13 +21,55 @@ document.addEventListener('DOMContentLoaded', () => {
   let prevCenterIndex = -1;
 
   const cardsData = [
-    { img: 'video3.jpg', url: 'https://www.youtube.com/embed/rAplQ2J7Uno?autoplay=1' },
-    { img: 'video2.jpg', url: 'https://www.youtube.com/embed/agbyIR5VqHQ?autoplay=1' },
-    { img: 'video4.jpg', url: 'https://www.youtube.com/embed/RR_Mq_6kpyI?autoplay=1' },
-    { img: 'video5.jpg', url: 'https://www.youtube.com/embed/Cogbt75XTAM?autoplay=1' },
-    { img: 'video6.jpg', url: 'https://www.youtube.com/embed/7mcCJENbYl4?autoplay=1' },
-    { img: 'video1.jpg', url: 'https://www.youtube.com/embed/sFAsZ8vlsaM?autoplay=1' },
-    { img: 'video7.jpg', url: '' }
+    {
+      img: 'video3.jpg',
+      url: 'https://www.youtube.com/embed/rAplQ2J7Uno?autoplay=1',
+      titleKor: 'interview',
+      titleEng: 'TEN TO THE TEN',
+      desc: '이 영상은 10년 후 나의 미래를 예측해서 대답하는 영상입니다.'
+    },
+    {
+      img: 'video2.jpg',
+      url: 'https://www.youtube.com/embed/agbyIR5VqHQ?autoplay=1',
+      titleKor: 'VLOG',
+      titleEng: '경성대 기숙사',
+      desc: '낮부터 밤까지 해가 뜨고 지는 모습을 촬영한 타임랩스 영상입니다.'
+    },
+    {
+      img: 'video4.jpg',
+      url: 'https://www.youtube.com/embed/RR_Mq_6kpyI?autoplay=1',
+      titleKor: 'SHORT DRAMA',
+      titleEng: '지식과 사랑을 동시에 얻는 방법',
+      desc: '이 영상은 보수동 책방 골목에서 촬영한 단편 드라마입니다.'
+    },
+    {
+      img: 'video5.jpg',
+      url: 'https://www.youtube.com/embed/Cogbt75XTAM?autoplay=1',
+      titleKor: 'VIDEO',
+      titleEng: '갑골문으로 배우는 사자성어',
+      desc: '갑골문을 그림으로 쉽게 배울 수 있도록 제작한 영상입니다.'
+    },
+    {
+      img: 'video6.jpg',
+      url: 'https://www.youtube.com/embed/7mcCJENbYl4?autoplay=1',
+      titleKor: 'documentary',
+      titleEng: '변하지 않는 밥톨나라 이야기',
+      desc: '학교 교내식당을 다큐멘터리 형식으로 촬영한 영상입니다.'
+    },
+    {
+      img: 'video1.jpg',
+      url: 'https://www.youtube.com/embed/sFAsZ8vlsaM?autoplay=1',
+      titleKor: 'MUSICVIDEO',
+      titleEng: '지친하루를 보내고 있는 당신에게',
+      desc: '경성대 재학생을 위한 뮤직비디오영상입니다.'
+    },
+    {
+      img: 'video7.jpg',
+      url: '',
+      titleKor: 'TO be continued',
+      titleEng: 'Coming Soon',
+      desc: '새로운 영상이 곧 공개됩니다.'
+    }
   ];
 
   // 인디케이터 생성
@@ -81,7 +126,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     const centerIndex = Math.round(position) % TOTAL_CARDS;
 
-    // 배경 업데이트
+    // 배경 및 텍스트 업데이트
     if (centerIndex !== prevCenterIndex) {
       prevCenterIndex = centerIndex;
       const currentData = cardsData[centerIndex];
@@ -91,9 +136,13 @@ document.addEventListener('DOMContentLoaded', () => {
         background1.src = currentData.img;
         background2.style.opacity = 1;
       }, 100);
+
+      // 텍스트 변경
+      titleKor.textContent = currentData.titleKor;
+      titleEng.textContent = currentData.titleEng;
+      desc.innerHTML = currentData.desc;
     }
 
-    // 카드 위치
     cards.forEach((card, i) => {
       let offset = i - centerIndex;
       if (offset > TOTAL_CARDS / 2) offset -= TOTAL_CARDS;

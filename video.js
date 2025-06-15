@@ -10,6 +10,7 @@ document.addEventListener('DOMContentLoaded', () => {
   const indicator = document.getElementById("indicator");
 
   const TOTAL_CARDS = 7;
+  const TOTAL_INDICATORS = 3;
   const CARD_WIDTH = 280;
   const CARD_HEIGHT = 200;
   const CARD_GAP = 40;
@@ -72,15 +73,14 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   ];
 
-  // 인디케이터 생성
-  for (let i = 0; i < cardsData.length; i++) {
+  // ✅ 인디케이터 3개 생성
+  for (let i = 0; i < TOTAL_INDICATORS; i++) {
     const dot = document.createElement("div");
     dot.className = "indicator-dot";
     indicator.appendChild(dot);
   }
   const dots = document.querySelectorAll('.indicator-dot');
 
-  // 카드 생성
   function createCards() {
     cardsData.forEach((data, index) => {
       const card = document.createElement('div');
@@ -136,8 +136,6 @@ document.addEventListener('DOMContentLoaded', () => {
         background1.src = currentData.img;
         background2.style.opacity = 1;
       }, 100);
-
-      // 텍스트 변경
       titleKor.textContent = currentData.titleKor;
       titleEng.textContent = currentData.titleEng;
       desc.innerHTML = currentData.desc;
@@ -162,8 +160,10 @@ document.addEventListener('DOMContentLoaded', () => {
       }
     });
 
+    // ✅ 인디케이터 계산 3개용
+    const indicatorIndex = Math.floor(centerIndex / (TOTAL_CARDS / TOTAL_INDICATORS));
     dots.forEach((dot, idx) => {
-      dot.classList.toggle("active", idx === centerIndex);
+      dot.classList.toggle("active", idx === indicatorIndex);
     });
 
     requestAnimationFrame(update);

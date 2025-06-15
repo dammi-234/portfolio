@@ -3,13 +3,11 @@
 <head>
   <meta charset="UTF-8" />
   <title>Portfolio</title>
-  <link
-    href="https://fonts.googleapis.com/css2?family=Noto+Sans&family=Noto+Sans+KR:wght@100;200;300;400;600;700;800;900&display=swap"
-    rel="stylesheet"
-  />
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans&family=Noto+Sans+KR:wght@100;200;300;400;600;700;800;900&display=swap" rel="stylesheet"/>
   <link rel="stylesheet" href="style.css" />
 </head>
 <body>
+
   <!-- 배경음 -->
   <audio id="bgm" src="main.mp3" autoplay muted loop></audio>
 
@@ -24,7 +22,7 @@
 
   <!-- 배경 비디오 -->
   <div class="hero">
-    <video class="bg-video" muted playsinline loop>
+    <video class="bg-video" muted playsinline autoplay loop>
       <source src="smoke.mp4" type="video/mp4" />
       Your browser doesn’t support HTML5 video.
     </video>
@@ -61,30 +59,8 @@
     <img src="profile.png" alt="Dammi 프로필" class="profile-photo" />
   </div>
 
+  <!-- js 분리 -->
   <script src="main.js"></script>
 
-  <!-- ✅ 자동재생 보조 -->
-  <script>
-    // 비디오 자동재생 보조
-    document.addEventListener('DOMContentLoaded', () => {
-      const bgVideo = document.querySelector('.bg-video');
-      if (bgVideo) {
-        bgVideo.muted = true;
-        bgVideo.playsInline = true;
-        bgVideo.play().catch((e) => {
-          console.warn('자동재생 차단됨. 사용자 인터랙션 필요');
-        });
-      }
-    });
-
-    // 오디오 음소거 해제 (ENTER 버튼 클릭시)
-    const bgm = document.getElementById('bgm');
-    const enterBtn = document.querySelector('.enter-button');
-    enterBtn.addEventListener('click', () => {
-      bgm.muted = false;
-      bgm.play();
-      document.querySelector('.intro').style.display = 'none';
-    });
-  </script>
 </body>
 </html>

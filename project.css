@@ -160,7 +160,6 @@ body, html {
   flex-direction: column;
   gap: 12px;
 }
-
 .indicator-dot {
   width: 10px;
   height: 10px;
@@ -171,9 +170,9 @@ body, html {
 }
 
 .indicator-dot.active {
-  border: 2px solid hotpink;
-  background: #fff;
-  opacity: 1;
+  background: #ED4787;
+  opacity: 0.9;
+  box-shadow: 0 0 8px #ED4787;
 }
 .video-design-button {
   position: absolute;

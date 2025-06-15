@@ -1,0 +1,138 @@
+html, body {
+  height: 100%;
+  margin: 0; padding: 0;
+  overflow: hidden;
+  background: #111;
+  font-family: 'Noto Sans KR', sans-serif;
+}
+
+/* 배경 이미지 */
+.bg-row {
+  position: absolute;
+  top: 0; left: 0;
+  width: 200vw;
+  height: 100vh;
+  display: flex;
+  z-index: 0;
+  transition: transform 0.2s ease-out;
+}
+.bg-img {
+  height: 100vh;
+  width: auto;
+  flex-shrink: 0;
+  object-fit: cover;
+}
+
+.background-overlay, .background-overlay2 {
+  position: fixed;
+  top: 0; left: 0;
+  width: 100vw; height: 100vh;
+  pointer-events: none;
+  background: rgba(0,0,0,0.7);
+}
+.background-overlay { z-index: -2; opacity: 0.7; }
+.background-overlay2 { z-index: 1; opacity: 0.4; }
+
+/* 메인 텍스트 */
+.main-text {
+  position: absolute;
+  left: 90px; top: 140px;
+  z-index: 3;
+  width: 380px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 4px;
+  color: white;
+}
+.main-title-kor {
+  font-weight: 700;
+  font-size: 21pt;
+  color: #ED4787;
+  margin: 0;
+  line-height: 1.4;
+  width: 100%;
+  text-align: left;
+}
+.main-title-eng {
+  font-weight: 900;
+  font-size: 56pt;
+  margin: 0;
+  line-height: 1.5;
+  width: 100%;
+  text-align: left;
+}
+.main-desc {
+  font-weight: 300;
+  font-size: 12pt;
+  margin: 0;
+  line-height: 1.5;
+  width: 100%;
+  text-align: left;
+  word-spacing: 2px;
+}
+
+/* 카드 스크롤 영역 */
+.thumb-scroll-area {
+  position: absolute;
+  top: 50%;
+  right: 40px;
+  width: 280px;
+  height: 540px;
+  transform: translateY(-50%);
+  overflow: visible;
+  z-index: 10;
+}
+
+.thumb-list {
+  position: relative;
+  width: 280px;
+  height: 540px;       /* 높이를 충분히 줘야 함 */
+  overflow-y: auto;    /* 세로 스크롤 활성화 */
+  overflow-x: hidden;
+  padding-right: 10px; /* 스크롤 공간 확보 */
+  box-sizing: content-box;
+
+  /* 아래는 꼭 추가하세요! */
+  min-height: calc(160px * 15); /* 내부 컨텐츠 높이 보장 */
+}
+
+.thumb-card {
+  position: relative; /* absolute -> relative 변경 */
+  margin-bottom: 20px; /* 카드 간 간격 */
+  width: 280px;
+  height: 140px;
+  border-radius: 18px;
+  background: #333;
+  box-shadow: 0 2px 20px rgba(0,0,0,0.2);
+  border: 4px solid transparent;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  box-sizing: border-box;
+  transition: transform 0.3s ease, opacity 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+.thumb-card.center {
+  border-color: #ED4787;
+  box-shadow: 0 4px 24px rgba(237, 71, 135, 0.8);
+  z-index: 100 !important;
+}
+
+.thumb-card img {
+  width: 100%;
+  height: 100%;       /* 카드 높이 전체 사용 */
+  object-fit: cover;  /* 이미지가 카드 영역 꽉 채움 */
+  display: block;     /* 여백 제거 */
+  border-radius: 18px; /* 카드 모서리랑 이미지 모서리 동일하게 */
+}
+
+.thumb-caption {
+  margin-top: 8px;
+  width: 100%;
+  text-align: center;
+  color: white;
+  font-weight: 700;
+  font-size: 1.3rem;
+  text-shadow: 0 2px 6px rgba(0,0,0,0.5);
+}

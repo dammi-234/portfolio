@@ -1,0 +1,78 @@
+<!-- index.html -->
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <title>김담미 프로필카드</title>
+  <link rel="stylesheet"
+        href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;700;900&display=swap">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <!-- 팝업 이미지 보기 -->
+  <div id="popup" class="popup hidden">
+    <span class="close-btn">&times;</span>
+    <img id="popup-img" src="" alt="popup image">
+  </div>
+
+  <div class="center-box">
+    <div class="profile-popup">
+      <div class="profile-row">
+        <div class="profile-imgbox">
+          <div class="bg-shape"></div>
+          <img class="profile-img" src="dammi.jpg" alt="김담미 프로필">
+        </div>
+        <div class="profile-main">
+          <h2 class="profile-name">
+            김담미 <span class="en">Kim dam mi</span>
+          </h2>
+          <div class="profile-meta">
+            <div class="section">
+              <strong>계정</strong>
+              <ul>
+                <li>ekaal234naver.com</li>
+                <li>@d2m_mi2</li>
+              </ul>
+            </div>
+            <div class="row-list">
+              <div class="column">
+                <strong>경력</strong>
+                <ul>
+                  <li>MCC 수습기자</li>
+                  <li>별무리 홍보기자 27기</li>
+                  <li>12대 학생회 문화부장</li>
+                </ul>
+              </div>
+              <div class="column">
+                <strong>자격증</strong>
+                <ul>
+                  <li>GTQ 1급</li>
+                  <li>브랜드마케팅1급</li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="gallery-section">
+        <div class="gallery-title">이미지</div>
+        <div class="gallery-slider-center">
+          <button class="arrow-btn" id="prevBtn">&#8592;</button>
+          <div class="slider-viewport">
+            <div class="slider-track" id="sliderTrack"></div>
+          </div>
+          <button class="arrow-btn" id="nextBtn">&#8594;</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 나가기 버튼 -->
+  <button class="exit-button" id="exitBackBtn" title="돌아가기">
+    <span class="exit-icon">×</span>
+  </button>
+
+  <script src="about.js"></script>
+</body>
+</html>

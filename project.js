@@ -11,7 +11,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
   const TOTAL_CARDS = 15;
   const TOTAL_INDICATORS = 5;
-  const CARD_WIDTH = 280;
+  const CARD_WIDTH = 290;
   const CARD_HEIGHT = 200;
   const CARD_GAP = 40;
   const SCROLL_SENSITIVITY = 0.002;
